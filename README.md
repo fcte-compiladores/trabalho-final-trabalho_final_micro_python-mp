@@ -92,13 +92,4 @@ flowchart TD
     C --> D["Árvore Sintática"]
     D --> E["Interpreter"]
     E --> F["Saída no terminal"]
-```
 
-## Observações
-- O comando de impressão é `imprima(expr)`.
-- Não há suporte a strings ou múltiplos argumentos em `imprima`.
-- O interpretador só aceita expressões matemáticas e variáveis.
-
----
-
-Sinta-se livre para modificar a gramática e expandir a linguagem!
