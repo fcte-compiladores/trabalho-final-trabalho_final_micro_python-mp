@@ -6,7 +6,7 @@
           | while_stmt
 
 assign_stmt: NAME "=" expr      -> assign
-print_stmt: "print" "(" expr ")" -> print
+print_stmt: "imprima" "(" expr ")" -> print
 if_stmt: "if" expr ":" block     -> if
 while_stmt: "while" expr ":" block -> while
 
