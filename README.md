@@ -118,6 +118,39 @@ imprima(x)  # Saída: 5
 4. **Extensão de arquivo:**
    Você pode usar qualquer extensão para seus programas (ex: `.mp`, `.minilang`, `.lucas`), desde que o conteúdo siga a sintaxe da linguagem.
 
+## Como rodar seus próprios arquivos .mp
+
+Você pode criar seus próprios arquivos de código-fonte com a extensão `.mp` e executá-los facilmente com o comando abaixo:
+
+### Passo a passo
+
+1. **Crie um arquivo `.mp`**
+   - Exemplo: `meuteste.mp`
+   ```
+   a = 10
+   b = 20
+   imprima(a + b)
+   ```
+
+2. **Salve o arquivo na raiz do projeto ou em qualquer pasta desejada.**
+
+3. **Execute o arquivo no terminal:**
+   ```sh
+   uv run mp meuteste.mp
+   ```
+
+4. **Veja a saída no terminal.**
+
+### Dicas
+- Certifique-se de que o arquivo `.mp` está salvo em UTF-8 para evitar problemas de acentuação.
+- Você pode criar e rodar quantos arquivos `.mp` quiser!
+- Para rodar os testes automatizados, use:
+  ```
+  uv run pytest
+  ```
+
+> Não é mais necessário rodar diretamente o main.py. Use sempre o comando `uv run mp <arquivo>.mp` para executar seus programas.
+
 ## Estrutura do Projeto
 
 - `main.py` — Ponto de entrada. Lê o arquivo-fonte, faz o parsing e executa.
@@ -196,5 +229,29 @@ Cada teste consiste em um arquivo `.mp` com código-fonte e a saída esperada é
 | funcao.mp       | Função definida pelo usuário               | 5.0                               |
 
 Para adicionar novos testes, basta criar um novo arquivo `.mp` em `tests/` e adicionar o caso no arquivo `test_interpreter.py`.
+
+## Rodando arquivos .mp com 'uv run mp'
+
+Para facilitar ainda mais, você pode criar um script chamado `mp.bat` na raiz do projeto (Windows) para rodar arquivos `.mp` com um comando simples:
+
+1. **Crie um arquivo chamado `mp.bat` na raiz do projeto** com o seguinte conteúdo:
+   ```bat
+   @echo off
+   uv run python main.py %1
+   ```
+
+2. **Agora, execute qualquer arquivo .mp assim:**
+   ```sh
+   uv run mp exemplo.mp
+   ```
+
+Isso executa o interpretador para o arquivo `.mp` informado, usando o ambiente virtual do projeto.
+
+> No Linux/Mac, crie um arquivo chamado `mp` (sem extensão) com:
+> ```sh
+> #!/bin/sh
+> uv run python main.py "$1"
+> ```
+> E torne executável: `chmod +x mp`
 
 
