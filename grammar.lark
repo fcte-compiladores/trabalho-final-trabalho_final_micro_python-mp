@@ -4,6 +4,12 @@
           | print_stmt
           | if_stmt
           | while_stmt
+          | func_def
+          | return_stmt
+
+func_def: "def" NAME "(" [params] ")" ":" block   -> func_def
+params: NAME ("," NAME)*
+return_stmt: "return" expr                        -> return_stmt
 
 assign_stmt: NAME "=" expr      -> assign
 print_stmt: "imprima" "(" expr ")" -> print
@@ -14,16 +20,28 @@ block: statement+
 
 ?expr: expr "+" term   -> add
      | expr "-" term   -> sub
+     | expr "==" term  -> eq
+     | expr "!=" term  -> ne
+     | expr ">" term  -> gt
+     | expr "<" term  -> lt
+     | expr ">=" term -> ge
+     | expr "<=" term -> le
+     | expr "and" term -> and_op
+     | expr "or" term  -> or_op
      | term
 
 ?term: term "*" factor -> mul
      | term "/" factor -> div
      | factor
 
-?factor: NUMBER        -> number
+?factor: "not" factor  -> not_op
+       | NUMBER        -> number
        | NAME          -> var
        | ESCAPED_STRING -> string
+       | NAME "(" [args] ")" -> func_call
        | "(" expr ")"
+
+args: expr ("," expr)*
 
 NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
 

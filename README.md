@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este projeto implementa uma linguagem de programação simples, interpretada em Python usando a biblioteca [Lark](https://github.com/lark-parser/lark). A linguagem suporta operações aritméticas, atribuição de variáveis, comandos de impressão (`imprima`), estruturas condicionais (`if`), de repetição (`while`), **strings** (com acentuação), **concatenação de strings** e **comentários**.
+Este projeto implementa uma linguagem de programação simples, interpretada em Python usando a biblioteca [Lark](https://github.com/lark-parser/lark). A linguagem suporta operações aritméticas, operadores de comparação e lógicos, atribuição de variáveis, comandos de impressão (`imprima`), estruturas condicionais (`if`), de repetição (`while`), **strings** (com acentuação), **concatenação de strings**, **funções definidas pelo usuário** e **comentários**.
 
 ## Sintaxe da Linguagem
 
@@ -19,6 +19,19 @@ Este projeto implementa uma linguagem de programação simples, interpretada em 
   imprima("Oi, " + "Lucas!")
   imprima("Valor: " + 123)
   ```
+- **Operadores de comparação:**
+  - `==`, `!=`, `<`, `>`, `<=`, `>=`
+  ```
+  imprima(2 == 2)  # True
+  imprima(3 > 5)   # False
+  imprima("a" != "b")  # True
+  ```
+- **Operadores lógicos:**
+  - `and`, `or`, `not`
+  ```
+  imprima(2 == 2 and 3 > 1)  # True
+  imprima(not (2 > 3))       # True
+  ```
 - **Concatenação de strings:**
   - Use `+` para juntar strings ou strings e números:
     ```
@@ -30,6 +43,15 @@ Este projeto implementa uma linguagem de programação simples, interpretada em 
   - Qualquer texto após `#` na linha é ignorado:
     ```
     imprima("Olá!")  # Isso é um comentário
+    ```
+- **Funções definidas pelo usuário:**
+  - Defina funções com `def` e retorne valores com `return`:
+    ```
+    def soma(a, b):
+        return a + b
+
+    x = soma(2, 3)
+    imprima(x)  # Saída: 5
     ```
 - **Condicional:**
   ```
@@ -48,10 +70,30 @@ Este projeto implementa uma linguagem de programação simples, interpretada em 
 Arquivo: `exemplo.mp`
 ``` 
 x = 7
-nome = "Lucas"
-imprima("Olá, " + nome)
-# Exemplo de comentário
-imprima(x + 1)
+y = x * 3 + 1
+imprima(y)
+
+a = "Olá, mundo!"
+imprima(a)
+imprima("Teste de string")
+
+a = "Olá, "
+b = "mundo!"
+imprima(a + b)  # Saída: Olá, mundo!
+imprima("Valor: " + 123)  # Saída: Valor: 123
+
+a = 5
+b = 10
+imprima(a < b)         # True
+imprima(a == 5 and b != 7)  # True
+imprima(not (a > b))   # True
+imprima(a > b)
+
+def soma(a, b):
+    return a + b
+
+x = soma(2, 3)
+imprima(x)  # Saída: 5
 ```
 
 ## Como Executar
@@ -88,15 +130,19 @@ imprima(x + 1)
 
 ```
 ?start: statement+
-?statement: assign_stmt | print_stmt | if_stmt | while_stmt
+?statement: assign_stmt | print_stmt | if_stmt | while_stmt | func_def | return_stmt
 assign_stmt: NAME "=" expr      -> assign
 print_stmt: "imprima" "(" expr ")" -> print
 if_stmt: "if" expr ":" block     -> if
 while_stmt: "while" expr ":" block -> while
+func_def: "def" NAME "(" [params] ")" ":" block   -> func_def
+params: NAME ("," NAME)*
+return_stmt: "return" expr                        -> return_stmt
 block: statement+
-?expr: expr "+" term | expr "-" term | term
+?expr: expr "+" term | expr "-" term | expr "==" term | expr "!=" term | expr ">" term | expr "<" term | expr ">=" term | expr "<=" term | expr "and" term | expr "or" term | term
 ?term: term "*" factor | term "/" factor | factor
-?factor: NUMBER | NAME | ESCAPED_STRING | "(" expr ")"
+?factor: "not" factor | NUMBER | NAME | ESCAPED_STRING | NAME "(" [args] ")" | "(" expr ")"
+args: expr ("," expr)*
 NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
 %import common.NUMBER
 %import common.NEWLINE

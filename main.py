@@ -19,5 +19,8 @@ with open(sys.argv[1], encoding="utf-8") as f:
     codigo = f.read()
 
 tree = parser.parse(codigo)
-for stmt in tree.children:
-    interpreter.exec(stmt)
+if hasattr(tree, 'children'):
+    for stmt in tree.children:
+        interpreter.exec(stmt)
+else:
+    interpreter.exec(tree)
