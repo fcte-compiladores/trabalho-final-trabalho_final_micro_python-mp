@@ -164,3 +164,37 @@ flowchart TD
     E --> F["Saída no terminal"]
 
 
+
+```
+
+## Testes Automatizados
+
+O projeto possui testes automatizados para garantir o funcionamento correto de todas as funcionalidades da linguagem. Os testes utilizam o framework pytest e estão localizados na pasta `tests/`.
+
+### Como rodar os testes
+
+1. Instale as dependências no ambiente virtual (usando uv):
+   ```
+   uv pip install pytest lark
+   ```
+2. Execute os testes:
+   ```
+   uv run pytest
+   ```
+
+### Estrutura dos testes
+Cada teste consiste em um arquivo `.mp` com código-fonte e a saída esperada é verificada automaticamente. Os principais testes são:
+
+| Teste           | Descrição                                 | Exemplo de saída esperada         |
+|-----------------|-------------------------------------------|-----------------------------------|
+| aritmetica.mp   | Operações aritméticas e atribuição         | 22.0                             |
+| string.mp       | Strings e impressão de strings             | "Olá, mundo!"<br>"Teste de string" |
+| concat.mp       | Concatenação de strings e números          | "Olá, ""mundo!"<br>"Valor: "123.0   |
+| comparacao.mp   | Operadores de comparação                   | True<br>False<br>True             |
+| logicos.mp      | Operadores lógicos                         | True<br>True                      |
+| comentario.mp   | Comentários na linguagem                   | "Olá!"                            |
+| funcao.mp       | Função definida pelo usuário               | 5.0                               |
+
+Para adicionar novos testes, basta criar um novo arquivo `.mp` em `tests/` e adicionar o caso no arquivo `test_interpreter.py`.
+
+
