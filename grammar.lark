@@ -22,6 +22,7 @@ block: statement+
 
 ?factor: NUMBER        -> number
        | NAME          -> var
+       | ESCAPED_STRING -> string
        | "(" expr ")"
 
 NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
@@ -31,4 +32,6 @@ NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
 %import common.WS_INLINE
 %ignore WS_INLINE
 %ignore NEWLINE
+%import common.ESCAPED_STRING
+%ignore /#[^\n]*/
 

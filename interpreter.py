@@ -8,8 +8,14 @@ class Interpreter:
                 return value
             case ('var', name):
                 return self.env.get(name, 0)
+            case ('string', value):
+                return value
             case ('add', left, right):
-                return self.eval(left) + self.eval(right)
+                l = self.eval(left)
+                r = self.eval(right)
+                if isinstance(l, str) or isinstance(r, str):
+                    return str(l) + str(r)
+                return l + r
             case ('sub', left, right):
                 return self.eval(left) - self.eval(right)
             case ('mul', left, right):

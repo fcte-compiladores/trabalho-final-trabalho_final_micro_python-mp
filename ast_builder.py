@@ -24,3 +24,6 @@ class ASTBuilder(Transformer):
 
     def div(self, items):
         return ('div', items[0], items[1])
+
+    def string(self, items):
+        return ('string', str(items[0]))
