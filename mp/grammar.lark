@@ -3,6 +3,7 @@
 ?statement: assign_stmt
           | print_stmt
           | if_stmt
+          | do_while_stmt      
           | while_stmt
           | func_def
           | return_stmt
@@ -14,9 +15,13 @@ return_stmt: "return" expr                        -> return_stmt
 assign_stmt: NAME "=" expr      -> assign
 print_stmt: "imprima" "(" expr ")" -> print
 if_stmt: "if" expr ":" block     -> if
-while_stmt: "while" expr ":" block -> while
+while_stmt: "while" "(" expr ")" "{" block "}"SEMICOLON
+do_while_stmt: "do" "{" statement* "}" "while" "(" expr ")" ";"    -> do_while
+
 
 block: statement+
+
+
 
 ?expr: expr "+" term   -> add
      | expr "-" term   -> sub
@@ -52,4 +57,8 @@ NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
 %ignore NEWLINE
 %import common.ESCAPED_STRING
 %ignore /#[^\n]*/
+
+
+
+SEMICOLON: ";"
 

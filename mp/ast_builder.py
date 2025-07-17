@@ -63,3 +63,16 @@ class ASTBuilder(Transformer):
         return items
     def return_stmt(self, items):
         return ('return', items[0])
+
+    def while_stmt(self, items):
+        condition = items[0] 
+        block = items[1]    
+        return ('while', condition, block)
+
+    def do_while(self, items):
+        body = items[:-1]
+        condition = items[-1]
+        return ("do_while", body, condition) 
+
+    def block(self, items):
+        return items

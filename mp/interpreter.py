@@ -1,3 +1,5 @@
+from lark import Tree
+
 class ReturnException(Exception):
     def __init__(self, value):
         self.value = value
@@ -9,6 +11,8 @@ class Interpreter:
 
     def eval(self, node, local_env=None):
         env = local_env if local_env is not None else self.env
+        if isinstance(node, Tree):
+            return self.eval((node.data, *node.children), env)
         match node:
             case ('number', value):
                 return value
@@ -65,6 +69,15 @@ class Interpreter:
 
     def exec(self, node, local_env=None):
         env = local_env if local_env is not None else self.env
+        if isinstance(node, Tree):
+            
+            if node.data == 'start':
+                for stmt in node.children:
+                    self.exec(stmt, env)
+           
+            else:
+                self.exec((node.data, *node.children), env)
+            return 
         match node:
             case ('assign', name, expr):
                 env[name] = self.eval(expr, env)
@@ -76,6 +89,34 @@ class Interpreter:
             case ('return', expr):
                 value = self.eval(expr, env)
                 raise ReturnException(value)
+            case ('while', condition, block):
+
+                iteration = 0
+                while self.eval(condition, env):
+
+                    try:
+                        self.exec(block, env)
+                    except ReturnException as ret:
+                       
+                        raise ret
+                    iteration += 1
+                
+            case ('do_while', body, condition):
+                
+                iteration = 0
+                while True:
+
+                    try:
+                        self.exec(body, env)
+                    except ReturnException as ret:
+                        
+                        raise ret
+
+                    cond_result = self.eval(condition, env)
+
+                    if not cond_result:
+                        break
+                    iteration += 1               
             case _:
                 # Suporte a blocos (lista de statements)
                 if isinstance(node, list):
@@ -83,3 +124,4 @@ class Interpreter:
                         self.exec(stmt, env)
                 else:
                     raise ValueError(f'Nó inválido: {node}')
+
