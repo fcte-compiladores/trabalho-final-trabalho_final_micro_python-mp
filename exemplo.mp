@@ -23,3 +23,6 @@ def soma(a, b):
 
 x = soma(2, 3)
 imprima(x)  # Saída: 5
+
+
+
