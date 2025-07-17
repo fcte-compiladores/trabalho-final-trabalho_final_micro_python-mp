@@ -2,10 +2,11 @@ import subprocess
 import sys
 from pathlib import Path
 import os
+import pytest
 
 BASE_DIR = Path(__file__).parent
 PROJECT_ROOT = BASE_DIR.parent
-MAIN = str(PROJECT_ROOT / "main.py")
+MAIN = str(PROJECT_ROOT / "mp" / "cli.py")
 
 # Use o Python do venv se existir
 VENV_PY = PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
@@ -22,13 +23,48 @@ TEST_CASES = [
     ("funcao.mp", "5.0\n"),
 ]
 
-def run_code(file):
-    result = subprocess.run([PYTHON_EXEC, MAIN, str(BASE_DIR / file)], capture_output=True, encoding="utf-8")
-    if result.returncode != 0:
-        print(f"STDERR para {file}:\n{result.stderr}")
-    return result.stdout
+@pytest.fixture(scope="module")
+def python_exec():
+    return PYTHON_EXEC
 
-def test_cases():
-    for fname, expected in TEST_CASES:
-        output = run_code(fname)
-        assert output == expected, f"Erro no teste {fname}:\nEsperado:\n{expected}\nObtido:\n{output}" 
+@pytest.fixture(scope="module")
+def main_script():
+    return MAIN
+
+@pytest.mark.parametrize("fname,expected", TEST_CASES)
+def test_interpreter_cases(fname, expected, python_exec, main_script):
+    file_path = str(BASE_DIR / fname)
+    result = subprocess.run([python_exec, "-X", "utf8", "-m", "mp.cli", file_path], capture_output=True, encoding="utf-8", errors="replace")
+    assert result.returncode == 0, f"Erro ao executar {fname}:\nSTDERR:\n{result.stderr}"
+    assert result.stdout == expected, (
+        f"Erro no teste {fname}:\n"
+        f"Esperado:\n{expected}\n"
+        f"Obtido:\n{result.stdout}"
+    )
+
+def test_no_duplicate_cases():
+    seen = set()
+    for fname, _ in TEST_CASES:
+        assert fname not in seen, f"Arquivo de teste duplicado: {fname}"
+        seen.add(fname)
+
+def test_if_else(capsys):
+    from mp.cli import ASTBuilder, Interpreter
+    from lark import Lark
+    parser = Lark.open('mp/grammar.lark', rel_to=__file__, parser='lalr', start='start')
+    code = '''
+    x = 10
+    if x > 5:
+        imprima("maior")
+    else:
+        imprima("menor")
+    '''
+    tree = parser.parse(code)
+    ast = ASTBuilder().transform(tree)
+    interpreter = Interpreter()
+    interpreter.exec(ast)
+    captured = capsys.readouterr()
+    assert "maior" in captured.out
+
+if __name__ == "__main__":
+    subprocess.run(["python", "-m", "pytest", "tests/test_interpreter.py"])
