@@ -7,7 +7,7 @@ from .interpreter import Interpreter
 
 BASE = Path(__file__).parent
 
-# Carrega a gramática
+# Carrega a gramÃ¡tica
 with open(BASE / "grammar.lark", encoding="utf-8") as f:
     grammar = f.read()
 
@@ -23,8 +23,8 @@ def main():
         codigo = f.read()
 
     tree = parser.parse(codigo)
-    if hasattr(tree, 'children'):
-        for stmt in tree.children:
+    if isinstance(tree, list):
+        for stmt in tree:
             interpreter.exec(stmt)
     else:
         interpreter.exec(tree)

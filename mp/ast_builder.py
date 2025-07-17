@@ -64,15 +64,17 @@ class ASTBuilder(Transformer):
     def return_stmt(self, items):
         return ('return', items[0])
 
-    def while_stmt(self, items):
-        condition = items[0] 
-        block = items[1]    
-        return ('while', condition, block)
-
-    def do_while(self, items):
-        body = items[:-1]
-        condition = items[-1]
-        return ("do_while", body, condition) 
+    def if_(self, items):
+        cond = items[0]
+        then_block = items[1].children if hasattr(items[1], 'children') else (items[1] if isinstance(items[1], list) else [items[1]])
+        if len(items) == 3 and items[2] is not None:
+            else_block = items[2].children if hasattr(items[2], 'children') else (items[2] if isinstance(items[2], list) else [items[2]])
+        else:
+            else_block = None
+        return ('if', cond, then_block, else_block)
 
     def block(self, items):
-        return items
+        return list(items)
+
+    def start(self, items):
+        return list(items)
