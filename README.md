@@ -131,7 +131,7 @@ O projeto possui testes automatizados para garantir o funcionamento correto de t
    ```
 
 ### Estrutura dos testes
-Cada teste consiste em um arquivo `.mp` com código-fonte e a saída esperada é verificada automaticamente. Os principais testes são:
+Cada teste consiste em um arquivo `.mp` na pasta `tests/` com código-fonte e a saída esperada é verificada automaticamente pelo pytest. Os principais testes são:
 
 | Teste           | Descrição                                 | Exemplo de saída esperada         |
 |-----------------|-------------------------------------------|-----------------------------------|
@@ -141,9 +141,9 @@ Cada teste consiste em um arquivo `.mp` com código-fonte e a saída esperada é
 | comparacao.mp   | Operadores de comparação                   | True<br>False<br>True             |
 | logicos.mp      | Operadores lógicos                         | True<br>True                      |
 | comentario.mp   | Comentários na linguagem                   | "Olá!"                            |
-| funcao.mp       | Função definida pelo usuário               | 5.0                               |
+| funcao.mp       | Função definida pelo usuário (com chaves)  | 5.0                               |
 
-Para adicionar novos testes, basta criar um novo arquivo `.mp` em `tests/` e adicionar o caso no arquivo `test_interpreter.py`.
+Para adicionar novos testes, basta criar um novo arquivo `.mp` em `tests/` e adicionar o caso na lista `TEST_CASES` do arquivo `tests/test_interpreter.py`.
 
 ## Rodando arquivos .mp com 'uv run mp'
 
