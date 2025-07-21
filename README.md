@@ -145,7 +145,20 @@ Cada teste consiste em um arquivo `.mp` na pasta `tests/` com código-fonte e a 
 
 Para adicionar novos testes, basta criar um novo arquivo `.mp` em `tests/` e adicionar o caso na lista `TEST_CASES` do arquivo `tests/test_interpreter.py`.
 
-## Rodando arquivos .mp com 'uv run mp'
+## Executando arquivos .mp facilmente
+
+Para rodar qualquer programa da sua linguagem, basta usar:
+
+```sh
+uv run mp <arquivo>.mp
+```
+
+Por exemplo:
+```sh
+uv run mp exemplos/hello.mp
+```
+
+Se preferir, você pode criar um script de atalho (como `mp.bat` no Windows ou `mp` no Linux/Mac) para facilitar ainda mais, mas isso é opcional.
 
 ## Referências
 
