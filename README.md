@@ -4,7 +4,7 @@
 
 - Lucas Víctor Ferreira de Araújo — 211063194 — Turma: 16 ás 18
 - José Vinicius Alvares Soares de Queiroz — 222006884 — Turma: 16 ás 18
-- Miguel Arthur Oliveira de Lima — 211062320 — Turma: 16 as 18
+- Miguel Arthur Oliveira de Lima — 211062320 — Turma: 16 ás 18
 
 ---
 
