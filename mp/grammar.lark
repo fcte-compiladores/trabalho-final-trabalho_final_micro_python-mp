@@ -13,6 +13,7 @@ do_while_stmt: "do" block "while" "(" expr ")" SEMICOLON?
 SEMICOLON: ";"
 
 func_def: "def" NAME "(" [params] ")" ":" block   -> func_def
+        | "def" NAME "(" [params] ")" block       -> func_def
 params: NAME ("," NAME)*
 return_stmt: "return" expr                        -> return_stmt
 
