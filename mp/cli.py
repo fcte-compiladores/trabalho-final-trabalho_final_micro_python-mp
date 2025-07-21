@@ -16,11 +16,23 @@ interpreter = Interpreter()
 
 def main():
     if len(sys.argv) < 2:
-        print("Uso: mp <arquivo_fonte>")
+        print("Uso: mp <arquivo_fonte> [--arvore]")
         sys.exit(1)
 
-    with open(sys.argv[1], encoding="utf-8") as f:
+    show_tree = '--arvore' in sys.argv
+    filename = sys.argv[1]
+    if show_tree and filename == '--arvore' and len(sys.argv) > 2:
+        filename = sys.argv[2]
+
+    with open(filename, encoding="utf-8") as f:
         codigo = f.read()
+
+    # Parse SEM transformer para visualizar a árvore sintática concreta
+    if show_tree:
+        parser_sem_transformer = Lark(grammar, parser='lalr')
+        tree = parser_sem_transformer.parse(codigo)
+        print(tree.pretty())
+        sys.exit(0)
 
     tree = parser.parse(codigo)
     if isinstance(tree, list):
