@@ -3,7 +3,7 @@
 ## Integrantes
 
 - Lucas Víctor Ferreira de Araújo — 211063194 — Turma: 16 ás 18
-- Nome 2 — Matrícula — Turma
+- José Vinicius Alvares Soares de Queiroz — 222006884 — Turma: 16 ás 18
 - Nome 3 — Matrícula — Turma
 
 ---
