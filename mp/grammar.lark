@@ -1,11 +1,16 @@
 ?start: statement+
 
-?statement: assign_stmt
+?statement: (assign_stmt
           | print_stmt
           | if_stmt
           | while_stmt
+          | do_while_stmt
           | func_def
-          | return_stmt
+          | return_stmt) SEMICOLON?
+
+do_while_stmt: "do" block "while" "(" expr ")" SEMICOLON?
+
+SEMICOLON: ";"
 
 func_def: "def" NAME "(" [params] ")" ":" block   -> func_def
 params: NAME ("," NAME)*
@@ -14,9 +19,15 @@ return_stmt: "return" expr                        -> return_stmt
 assign_stmt: NAME "=" expr      -> assign
 print_stmt: "imprima" "(" expr ")" -> print
 if_stmt: "if" expr ":" block ["else" ":" block]     -> if_
+       | "if" "(" expr ")" block ["else" block]         -> if_
 while_stmt: "while" expr ":" block -> while
+           | "while" "(" expr ")" block -> while
 
-block: statement+
+block: statement+        -> block
+     | LBRACE statement* RBRACE   -> block
+
+LBRACE: "{"
+RBRACE: "}"
 
 ?expr: expr "+" term   -> add
      | expr "-" term   -> sub

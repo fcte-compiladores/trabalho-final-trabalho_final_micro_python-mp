@@ -81,6 +81,32 @@ class Interpreter:
                     self.exec(then_block, env)
                 elif else_block is not None:
                     self.exec(else_block, env)
+            # Suporte para Tree('while', ...) e Tree('do_while', ...) vindos diretamente como Tree
+            case _ if hasattr(node, 'data') and node.data == 'while':
+                cond, block = node.children
+                while self.eval(cond, env):
+                    if isinstance(block, list):
+                        for stmt in block:
+                            self.exec(stmt, env)
+                    elif hasattr(block, 'children'):
+                        for stmt in block.children:
+                            self.exec(stmt, env)
+                    else:
+                        self.exec(block, env)
+                return
+            case ('do_while', block, cond):
+                while True:
+                    if isinstance(block, list):
+                        for stmt in block:
+                            self.exec(stmt, env)
+                    elif hasattr(block, 'children'):
+                        for stmt in block.children:
+                            self.exec(stmt, env)
+                    else:
+                        self.exec(block, env)
+                    if not self.eval(cond, env):
+                        break
+                return
             case _:
                 # Suporte a blocos (lista de statements)
                 if isinstance(node, list):

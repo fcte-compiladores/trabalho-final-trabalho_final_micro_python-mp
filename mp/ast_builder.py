@@ -73,8 +73,26 @@ class ASTBuilder(Transformer):
             else_block = None
         return ('if', cond, then_block, else_block)
 
+    def while_(self, items):
+        cond = items[0]
+        block = items[1].children if hasattr(items[1], 'children') else (items[1] if isinstance(items[1], list) else [items[1]])
+        return ('while', cond, block)
+
+    def do_while_stmt(self, items):
+        block = items[0].children if hasattr(items[0], 'children') else (items[0] if isinstance(items[0], list) else [items[0]])
+        cond = items[1]
+        return ('do_while', block, cond)
+
+    def statement(self, items):
+        # Retorna apenas o primeiro item que é o statement real
+        for item in items:
+            if not hasattr(item, 'type') or item.type not in ('SEMICOLON', 'LBRACE', 'RBRACE'):
+                return item
+        return None
+
     def block(self, items):
-        return list(items)
+        # Filtra apenas statements válidos
+        return [item for item in items if not hasattr(item, 'type') or item.type not in ('SEMICOLON', 'LBRACE', 'RBRACE')]
 
     def start(self, items):
         return list(items)
