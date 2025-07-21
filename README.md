@@ -1,102 +1,22 @@
 # Trabalho_Compiladores
 
+## Integrantes
+
+- Lucas Víctor Ferreira de Araújo — 211063194 — Turma: 16 ás 18
+- Nome 2 — Matrícula — Turma
+- Nome 3 — Matrícula — Turma
+
+---
+
 ## Descrição
 
-Este projeto implementa uma linguagem de programação simples, interpretada em Python usando a biblioteca [Lark](https://github.com/lark-parser/lark). A linguagem suporta operações aritméticas, operadores de comparação e lógicos, atribuição de variáveis, comandos de impressão (`imprima`), estruturas condicionais (`if`), de repetição (`while`), **strings** (com acentuação), **concatenação de strings**, **funções definidas pelo usuário** e **comentários**. #txt
+Este projeto implementa uma linguagem de programação simples, interpretada em Python usando a biblioteca [Lark](https://github.com/lark-parser/lark). A linguagem suporta operações aritméticas, operadores de comparação e lógicos, atribuição de variáveis, comandos de impressão (`imprima`), estruturas condicionais (`if`), de repetição (`while`, `do-while`), **strings** (com acentuação), **concatenação de strings**, **funções definidas pelo usuário** e **comentários**.
 
-## Sintaxe da Linguagem
+A análise sintática é feita pelo Lark, a AST é construída por um Transformer customizado, e a execução é feita por um interpretador recursivo em Python.
 
-- **Atribuição:**
-  ```
-  x = 10
-  y = x * 2 + 5
-  texto = "Olá, mundo!"
-  ```
-- **Impressão:**
-  ```
-  imprima(y)
-  imprima("Mensagem com acentuação: çãõé")
-  imprima("Oi, " + "Lucas!")
-  imprima("Valor: " + 123)
-  ```
-- **Operadores de comparação:**
-  - `==`, `!=`, `<`, `>`, `<=`, `>=`
-  ```
-  imprima(2 == 2)  # True
-  imprima(3 > 5)   # False
-  imprima("a" != "b")  # True
-  ```
-- **Operadores lógicos:**
-  - `and`, `or`, `not`
-  ```
-  imprima(2 == 2 and 3 > 1)  # True
-  imprima(not (2 > 3))       # True
-  ```
-- **Concatenação de strings:**
-  - Use `+` para juntar strings ou strings e números:
-    ```
-    nome = "Lucas"
-    imprima("Olá, " + nome)
-    imprima("Resultado: " + 42)
-    ```
-- **Comentário:**
-  - Qualquer texto após `#` na linha é ignorado:
-    ```
-    imprima("Olá!")  # Isso é um comentário
-    ```
-- **Funções definidas pelo usuário:**
-  - Defina funções com `def` e retorne valores com `return`:
-    ```
-    def soma(a, b):
-        return a + b
+---
 
-    x = soma(2, 3)
-    imprima(x)  # Saída: 5
-    ```
-- **Condicional:**
-  ```
-  if x > 0:
-      imprima(x)
-  ```
-- **Repetição:**
-  ```
-  while x > 0:
-      imprima(x)
-      x = x - 1
-  ```
-
-## Exemplo de Código
-
-Arquivo: `exemplo.mp`
-``` 
-x = 7
-y = x * 3 + 1
-imprima(y)
-
-a = "Olá, mundo!"
-imprima(a)
-imprima("Teste de string")
-
-a = "Olá, "
-b = "mundo!"
-imprima(a + b)  # Saída: Olá, mundo!
-imprima("Valor: " + 123)  # Saída: Valor: 123
-
-a = 5
-b = 10
-imprima(a < b)         # True
-imprima(a == 5 and b != 7)  # True
-imprima(not (a > b))   # True
-imprima(a > b)
-
-def soma(a, b):
-    return a + b
-
-x = soma(2, 3)
-imprima(x)  # Saída: 5
-```
-
-## Como Executar
+## Instalação
 
 1. **Requisitos:**
    - Python 3.11+
@@ -104,52 +24,44 @@ imprima(x)  # Saída: 5
      ```
      pip install lark
      ```
+   - (Opcional) Use o gerenciador [uv](https://github.com/astral-sh/uv) para ambientes virtuais e execução:
+     ```
+     uv pip install lark pytest
+     ```
 
 2. **Execute um programa da linguagem:**
    ```
-   python main.py exemplo.mp
+   uv run mp exemplos/hello.mp
    ```
    O interpretador irá ler e executar o código do arquivo indicado.
 
-3. **Dicas de encoding:**
-   - Certifique-se de que seus arquivos de código-fonte estejam salvos em UTF-8 para garantir que acentuação e caracteres especiais funcionem corretamente.
-   - O interpretador já lê os arquivos como UTF-8 por padrão.
-
-4. **Extensão de arquivo:**
-   Você pode usar qualquer extensão para seus programas (ex: `.mp`, `.minilang`, `.lucas`), desde que o conteúdo siga a sintaxe da linguagem.
-
-## Como rodar seus próprios arquivos .mp
-
-Você pode criar seus próprios arquivos de código-fonte com a extensão `.mp` e executá-los facilmente com o comando abaixo:
-
-### Passo a passo
-
-1. **Crie um arquivo `.mp`**
-   - Exemplo: `meuteste.mp`
+3. **Visualizando a árvore sintática:**
    ```
-   a = 10
-   b = 20
-   imprima(a + b)
+   uv run mp exemplos/hello.mp --arvore
    ```
 
-2. **Salve o arquivo na raiz do projeto ou em qualquer pasta desejada.**
-
-3. **Execute o arquivo no terminal:**
-   ```sh
-   uv run mp meuteste.mp
+4. **Rodando testes automatizados:**
+   ```
+   uv run pytest
    ```
 
-4. **Veja a saída no terminal.**
+---
 
-### Dicas
-- Certifique-se de que o arquivo `.mp` está salvo em UTF-8 para evitar problemas de acentuação.
-- Você pode criar e rodar quantos arquivos `.mp` quiser!
-- Para rodar os testes automatizados, use:
-  ```
-  uv run pytest
-  ```
+## Exemplos
 
-> Não é mais necessário rodar diretamente o main.py. Use sempre o comando `uv run mp <arquivo>.mp` para executar seus programas.
+A pasta `exemplos/` contém exemplos reais de programas na linguagem implementada:
+
+- `hello.mp` — Hello World
+- `aritmetica.mp` — Operações aritméticas
+- `fibonacci.mp` — Função recursiva de Fibonacci
+- `fatorial.mp` — Função recursiva de fatorial
+- `ordenacao.mp` — Bubble sort simples
+- `do_while.mp` — Laço do-while
+- `funcoes.mp` — Função com parâmetros e retorno
+- `condicional.mp` — If/else
+- `busca_binaria.mp` — Busca binária simulada
+
+---
 
 ## Estrutura do Projeto
 
@@ -158,6 +70,23 @@ Você pode criar seus próprios arquivos de código-fonte com a extensão `.mp` 
 - `ast_builder.py` — Constrói a árvore sintática abstrata (AST).
 - `interpreter.py` — Executa os comandos da linguagem a partir da AST.
 - `exemplo.mp` — Exemplo de código-fonte.
+- `exemplos/` — Exemplos variados de código-fonte.
+- `tests/` — Testes automatizados.
+
+---
+
+## Fluxo de Execução
+
+```mermaid
+flowchart TD
+    A["Arquivo fonte .mp"] --> B["Parser (Lark)"]
+    B --> C["ASTBuilder"]
+    C --> D["Árvore Sintática"]
+    D --> E["Interpreter"]
+    E --> F["Saída no terminal"]
+```
+
+---
 
 ## Gramática Resumida
 
@@ -184,20 +113,6 @@ NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
 %ignore WS_INLINE
 %ignore NEWLINE
 %ignore /#[^\n]*/
-```
-
-## Fluxo de Execução
-
-```mermaid
-flowchart TD
-    A["Arquivo fonte .mp"] --> B["Parser (Lark)"]
-    B --> C["ASTBuilder"]
-    C --> D["Árvore Sintática"]
-    D --> E["Interpreter"]
-    E --> F["Saída no terminal"]
-
-
-
 ```
 
 ## Testes Automatizados
@@ -232,26 +147,22 @@ Para adicionar novos testes, basta criar um novo arquivo `.mp` em `tests/` e adi
 
 ## Rodando arquivos .mp com 'uv run mp'
 
-Para facilitar ainda mais, você pode criar um script chamado `mp.bat` na raiz do projeto (Windows) para rodar arquivos `.mp` com um comando simples:
+## Referências
 
-1. **Crie um arquivo chamado `mp.bat` na raiz do projeto** com o seguinte conteúdo:
-   ```bat
-   @echo off
-   uv run python main.py %1
-   ```
+- [Lark - Parsing Toolkit for Python](https://github.com/lark-parser/lark): Utilizado para análise léxica e sintática.
+- [Documentação oficial do Python](https://docs.python.org/3/): Consultas gerais sobre sintaxe e recursos da linguagem.
+- [Exemplo de interpretador com Lark](https://github.com/lark-parser/lark/blob/master/examples/calc.py): Base para estrutura do parser e AST.
+- (Adicione outras referências, tutoriais, livros, artigos, códigos usados como base, e explique como cada um foi usado)
 
-2. **Agora, execute qualquer arquivo .mp assim:**
-   ```sh
-   uv run mp exemplo.mp
-   ```
+---
 
-Isso executa o interpretador para o arquivo `.mp` informado, usando o ambiente virtual do projeto.
+## Bugs, Limitações e Problemas Conhecidos
 
-> No Linux/Mac, crie um arquivo chamado `mp` (sem extensão) com:
-> ```sh
-> #!/bin/sh
-> uv run python main.py "$1"
-> ```
-> E torne executável: `chmod +x mp`
+- Não há verificação de tipos avançada (ex: soma de string com número é convertida para string, mas outros erros de tipo não são tratados).
+- Não há suporte a listas/arrays nativos (pode ser simulado via variáveis).
+- Não há tratamento de erros detalhado para todas as situações (ex: divisão por zero, variáveis não declaradas).
+- Não há suporte a escopo local em blocos (apenas em funções).
+- Não há otimizações de performance (interpretador simples, recursivo).
+- (Adicione outros problemas conhecidos ou limitações encontradas)
 
 

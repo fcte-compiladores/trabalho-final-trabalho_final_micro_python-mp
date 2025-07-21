@@ -1,0 +1,5 @@
+i = 0
+do {
+    imprima(i)
+    i = i + 1
+} while (i < 5) 
