@@ -51,7 +51,9 @@ def test_no_duplicate_cases():
 def test_if_else(capsys):
     from mp.cli import ASTBuilder, Interpreter
     from lark import Lark
-    parser = Lark.open('mp/grammar.lark', rel_to=__file__, parser='lalr', start='start')
+    import os
+    grammar_path = os.path.join(os.path.dirname(__file__), '..', 'mp', 'grammar.lark')
+    parser = Lark.open(grammar_path, parser='lalr', start='start')
     code = '''
     x = 10
     if x > 5:
